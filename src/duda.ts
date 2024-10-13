@@ -14,15 +14,24 @@ import App from './App.vue'
 import { App as IApp, createApp } from 'vue'
 
 let app: IApp<Element> | null = null
-function init({ container, props = {} }: { container?: any, props?: {} } = {}) {
+export function init({ container, props = {} }: { container?: any, props?: {} } = {}) {
   app = createApp(App);
   registerPlugins(app)
   app.mount(container)
 }
 
-function clean() {
+export function clean() {
   app?.unmount();
 }
 
-(window as any).init = init;
-(window as any).clean = clean;
+
+(function(global){
+
+  var handler: any = {
+    init: init,
+    clean: clean,
+  };
+
+  (global as any).dmAPI.registerExternalWidget('nbn-address', handler)
+
+}(window));

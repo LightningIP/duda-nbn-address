@@ -50,7 +50,9 @@ export default defineConfig({
         duda: 'src/duda.ts',
       },
       output: {
-        entryFileNames: 'duda.js',
+        entryFileNames: '[name].js',
+        format: 'amd',
+        compact: true,
       }
     }
   }

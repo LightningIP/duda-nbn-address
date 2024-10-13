@@ -14,14 +14,15 @@ import App from './App.vue'
 import { App as IApp, createApp } from 'vue'
 
 let app: IApp<Element> | null = null
-export function init({ container, props = {} }: { container?: any, props?: {} } = {}) {
+function init({ container, props = {} }: { container?: any, props?: {} } = {}) {
   app = createApp(App);
   registerPlugins(app)
   app.mount(container)
 }
 
-export function clean() {
+function clean() {
   app?.unmount();
 }
 
-init({ container: '#app' });
+(window as any).init = init;
+(window as any).clean = clean;

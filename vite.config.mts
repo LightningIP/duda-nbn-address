@@ -57,7 +57,7 @@ export default defineConfig({
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: '[name]-[hash].js',
-        //format: 'amd',
+        format: 'iife',
         //amd: {
         //  forceJsExtensionForImports: true,
         //},

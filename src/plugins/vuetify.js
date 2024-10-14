@@ -1,0 +1,1 @@
+define(["../../node_modules/@mdi/font/css/materialdesignicons.css.js","../../node_modules/vuetify/lib/styles/main.css.js","../../node_modules/vuetify/lib/framework.js"],function(s,i,e){"use strict";return e.createVuetify({theme:{defaultTheme:"dark"}})});

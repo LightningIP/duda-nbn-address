@@ -10,6 +10,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+
   plugins: [
     Vue({
       template: { transformAssetUrls },
@@ -26,7 +27,9 @@ export default defineConfig({
       },
     }),
   ],
+
   define: { 'process.env': {} },
+
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -41,9 +44,11 @@ export default defineConfig({
       '.vue',
     ],
   },
+
   server: {
     port: 3000,
   },
+
   build: {
     rollupOptions: {
       input: {
@@ -53,7 +58,12 @@ export default defineConfig({
         entryFileNames: '[name].js',
         format: 'amd',
         compact: true,
-      }
+        minifyInternalExports: true,
+        preserveModules: true,
+      },
+      preserveEntrySignatures: 'strict',
+      treeshake: false,
     }
   }
+
 })

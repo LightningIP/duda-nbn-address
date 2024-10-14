@@ -1,10 +1,12 @@
 <template>
   <v-autocomplete
+
+    flat
     placeholder="Search your address..."
     persistent-placeholder
+    clearable
 
     append-inner-icon="mdi-locate"
-    clearable
 
     menu-icon=""
     class="flex-full-width mx-1 mx-sm-0"
@@ -21,8 +23,8 @@
     theme="light"
     variant="solo"
     no-filter
-    :loading="props.loading"
     :disabled="props.loading || props.disabled"
+    :hide-details="true"
 
     @update:search="searchTextUpdate"
   ></v-autocomplete>
@@ -33,7 +35,7 @@
   import { Loader } from '@googlemaps/js-api-loader';
 
   // Props and Emits
-  const props = defineProps(['modelValue', 'loading', 'disabled']);
+  const props = defineProps(['modelValue', 'disabled']);
   const emit = defineEmits(['update:modelValue']);
 
   // Load Google Maps

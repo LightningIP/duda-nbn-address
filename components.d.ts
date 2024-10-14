@@ -9,9 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddressBar: typeof import('./src/components/AddressBar.vue')['default']
     AddressSelect: typeof import('./src/components/AddressSelect.vue')['default']
-    copy: typeof import('./src/components/DisplayResult copy.vue')['default']
     DisplayResult: typeof import('./src/components/DisplayResult.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    SelectResults: typeof import('./src/components/SelectResults.vue')['default']
   }
 }

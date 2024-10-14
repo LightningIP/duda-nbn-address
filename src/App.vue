@@ -98,20 +98,10 @@
 <script setup lang="ts">
   import AddressBar from './components/AddressBar.vue';
   import { ref, watch, computed } from 'vue';
+  import { AppProps } from './types';
 
-  const props = defineProps<{
-    general: {
-      mode: 'redirector' | 'basicinfo' | ''
-    }
-    redirect: {
-      fixedline: string,
-      wireless: string,
-      satellite: string,
-      enterprise: string,
-      fibreUpgrade: string,
 
-    }
-  }>();
+  const props = defineProps<AppProps>();
 
   const addressSearchString = ref<string | null>(null);
   const loading = ref<boolean>(false);
@@ -122,7 +112,6 @@
   const serviceQualification = ref<any>(null);
 
 
-  type Technology = 'Fibre' | 'Fibre To The Node' | 'Wireless' | 'HFC' | 'Fibre To The Curb' | 'Fibre To The Building' | 'Satellite';
   const quickSq = ref<null | {
     id: string;
     formattedAddress: string;

@@ -12,12 +12,13 @@ import App from './App.vue'
 
 // Composables
 import { App as IApp, createApp } from 'vue'
+import { AppProps } from './types';
 
 let app: IApp<Element> | null = null
-export function init({ container, props = {} }: { container?: any, props?: {} } = {}) {
-  app = createApp(App, props);
+export function init(initData: { container?: any, props: AppProps }) {
+  app = createApp(App, initData.props);
   registerPlugins(app)
-  app.mount(container)
+  app.mount(initData.container)
 }
 
 export function clean() {
@@ -25,9 +26,13 @@ export function clean() {
 }
 
 init({ container: '#app', props: {
-  redirect: {
-    fixedline: 'https://www.lightningip.com.au/services/nbn-plans',
-    wireless: 'https://www.lightningip.com.au/services/nbn-wireless-plans',
-    satellite: 'https://www.lightningip.com.au/services/nbn-satellite-plans',
-  }
+  mode: 'quicklookup',
+  techOpts: [
+    {
+      tech: 'FixedLine',
+      name: 'Home Plans',
+      action: 'button',
+      link: '/home-plans',
+    }
+  ],
 } });

@@ -16,6 +16,7 @@
 
     auto-select-first
     hide-no-data
+    hide-selected
 
     theme="light"
     variant="solo"
@@ -34,7 +35,6 @@
   // Props and Emits
   const props = defineProps(['modelValue', 'loading', 'disabled']);
   const emit = defineEmits(['update:modelValue']);
-
 
   // Load Google Maps
   const loader = new Loader({
@@ -145,6 +145,13 @@
    */
   watch(chosenSearchItem, (val) => {
     emit('update:modelValue', val);
+  });
+
+
+  watch(() => props.modelValue, (val) => {
+    if (!val) {
+      chosenSearchItem.value = '';
+    }
   });
 
 </script>

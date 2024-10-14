@@ -7,6 +7,7 @@ import ViteFonts from 'unplugin-fonts/vite'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
+import vuetify from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -61,12 +62,12 @@ export default defineConfig({
         //amd: {
         //  forceJsExtensionForImports: true,
         //},
-        compact: false,
-        minifyInternalExports: false,
-        //preserveModules: true,
+        compact: true,
+        minifyInternalExports: true,
+        inlineDynamicImports: true,
       },
       preserveEntrySignatures: 'strict',
-      treeshake: false,
+      treeshake: true,
     }
   }
 

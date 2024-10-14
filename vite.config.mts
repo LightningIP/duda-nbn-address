@@ -57,9 +57,12 @@ export default defineConfig({
       output: {
         entryFileNames: '[name].js',
         format: 'amd',
-        compact: true,
-        minifyInternalExports: true,
-        // preserveModules: true,
+        amd: {
+          forceJsExtensionForImports: true,
+        },
+        compact: false,
+        minifyInternalExports: false,
+        preserveModules: true,
       },
       preserveEntrySignatures: 'strict',
       treeshake: false,

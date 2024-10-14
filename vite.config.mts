@@ -56,13 +56,14 @@ export default defineConfig({
       },
       output: {
         entryFileNames: '[name].js',
-        format: 'amd',
-        amd: {
-          forceJsExtensionForImports: true,
-        },
+        chunkFileNames: '[name]-[hash].js',
+        //format: 'amd',
+        //amd: {
+        //  forceJsExtensionForImports: true,
+        //},
         compact: false,
         minifyInternalExports: false,
-        preserveModules: true,
+        //preserveModules: true,
       },
       preserveEntrySignatures: 'strict',
       treeshake: false,

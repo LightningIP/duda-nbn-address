@@ -3,7 +3,7 @@
     <v-card density="compact">
 
       <!-- Address Bar -->
-      <AddressBar v-model="addressSearchString" :disabled="loading || searchDisabled"
+      <AddressBar v-model="addressSearchString" :disabled="loading || searchDisabled" :autofocus="!props.inEditor"
         v-if="!quickSq && !addressResults.length"
       />
 

@@ -10,6 +10,7 @@ export type TechnologyOption = {
 }
 
 export type AppProps = {
-  mode: 'quicklookup' | 'fulllookup',
-  techOpts: TechnologyOption[],
+  mode: 'quicklookup' | 'fulllookup';
+  techOpts: TechnologyOption[];
+  inEditor?: boolean;
 }

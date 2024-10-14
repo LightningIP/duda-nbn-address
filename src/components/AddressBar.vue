@@ -25,7 +25,7 @@
     :disabled="props.disabled"
     :hide-details="true"
 
-    autofocus
+    :autofocus="props.autofocus"
 
     @update:search="searchTextUpdate"
 
@@ -43,7 +43,7 @@
   import { Loader } from '@googlemaps/js-api-loader';
 
   // Props and Emits
-  const props = defineProps(['modelValue', 'disabled']);
+  const props = defineProps(['modelValue', 'disabled', 'autofocus']);
   const emit = defineEmits(['update:modelValue']);
 
   // Load Google Maps

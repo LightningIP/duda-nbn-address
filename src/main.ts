@@ -27,6 +27,7 @@ export function clean() {
 
 init({ container: '#app', props: {
   mode: 'quicklookup',
+  inEditor: false,
   techOpts: [
     {
       tech: 'FixedLine',

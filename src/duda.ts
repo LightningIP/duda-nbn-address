@@ -15,7 +15,8 @@ import { App as IApp, createApp } from 'vue'
 
 let app: IApp<Element> | null = null
 export function init({ container, props = {} }: { container?: any, props?: {} } = {}) {
-  app = createApp(App);
+  console.log('[LIP_DUDA_NBN_ADDRESS] Init widget with props:', props);
+  app = createApp(App, props);
   registerPlugins(app)
   app.mount(container)
 }

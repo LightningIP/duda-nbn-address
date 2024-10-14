@@ -1,91 +1,87 @@
 <template>
-  <v-app :full-height="false">
-    <v-main>
+  <div>
+    <v-card density="compact">
 
-      <v-card density="compact">
+      <!-- Address Bar -->
+      <AddressBar v-model="addressSearchString" :disabled="loading || searchDisabled"
+        v-if="!quickSq && !addressResults.length"
+      />
 
-        <!-- Address Bar -->
-        <AddressBar v-model="addressSearchString" :disabled="loading || searchDisabled"
-          v-if="!quickSq && !addressResults.length"
-        />
+      <!-- Choose Banner -->
+      <v-banner
+        v-if="addressResults.length > 1 && !quickSq"
+        color="info"
+        lines="one"
+      >
+        <v-banner-text>
+          <h4>{{ addressResults.length }} addresses found.</h4>
+        </v-banner-text>
 
-        <!-- Choose Banner -->
-        <v-banner
-          v-if="addressResults.length > 1 && !quickSq"
-          color="info"
-          lines="one"
-        >
-          <v-banner-text>
-            <h4>{{ addressResults.length }} addresses found.</h4>
-          </v-banner-text>
+        <template v-slot:actions>
+          <v-btn @click="resetForm()" variant="plain" color="danger" v-if="!loading && !searchDisabled"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
+          <v-btn @click="resultsDialog = !resultsDialog" variant="tonal" :loading="loading">Choose</v-btn>
+        </template>
+      </v-banner>
 
-          <template v-slot:actions>
-            <v-btn @click="resetForm()" variant="plain" color="danger" v-if="!loading && !searchDisabled"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
-            <v-btn @click="resultsDialog = !resultsDialog" variant="tonal" :loading="loading">Choose</v-btn>
-          </template>
-        </v-banner>
-
-        <!-- Quick SQ Results -->
-        <v-card v-if="quickSq" flat :title="quickSq.formattedAddress">
-          <v-card-text v-if="buttons.length">
-            <div class="d-flex justify-left ga-2">
-              <v-btn v-for="button in buttons" :href="button.href" size="small">{{ button.label }}</v-btn>
-            </div>
-          </v-card-text>
-          <template v-slot:append>
-            <v-btn @click="resetForm()" variant="plain" color="danger"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
-          </template>
-        </v-card>
-
-        <v-progress-linear
-          :active="true"
-          color="primary"
-          height="5"
-          :indeterminate="loading"
-        ></v-progress-linear>
+      <!-- Quick SQ Results -->
+      <v-card v-if="quickSq" flat :title="quickSq.formattedAddress">
+        <v-card-text v-if="buttons.length">
+          <div class="d-flex justify-left ga-2">
+            <v-btn v-for="button in buttons" :href="button.href" size="small">{{ button.label }}</v-btn>
+          </div>
+        </v-card-text>
+        <template v-slot:append>
+          <v-btn @click="resetForm()" variant="plain" color="danger"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
+        </template>
       </v-card>
 
-      <v-dialog max-width="500" v-model="resultsDialog">
-        <template v-slot:default="{ isActive }">
-          <v-card title="Select your address">
-            <v-card-text>
-              <p>
-                We found a couple of addresses that match your search for {{ addressSearchString }}.
-                To continue, please select the correct address below...
-              </p>
+      <v-progress-linear
+        :active="true"
+        color="primary"
+        height="5"
+        :indeterminate="loading"
+      ></v-progress-linear>
+    </v-card>
 
-              <v-data-iterator :items="addressResults" :page="locidResultsPage">
-                <template v-slot:default="{ items }">
-                  <template v-for="(item) in items" :key="item.raw.value">
-                    <v-btn @click="isActive.value = false; fetchLocation(item.raw.value)" block class="mt-3" variant="outlined">{{ item.raw.label }}</v-btn>
-                  </template>
+    <v-dialog max-width="500" v-model="resultsDialog">
+      <template v-slot:default="{ isActive }">
+        <v-card title="Select your address">
+          <v-card-text>
+            <p>
+              We found a couple of addresses that match your search for {{ addressSearchString }}.
+              To continue, please select the correct address below...
+            </p>
+
+            <v-data-iterator :items="addressResults" :page="locidResultsPage">
+              <template v-slot:default="{ items }">
+                <template v-for="(item) in items" :key="item.raw.value">
+                  <v-btn @click="isActive.value = false; fetchLocation(item.raw.value)" block class="mt-3" variant="outlined">{{ item.raw.label }}</v-btn>
                 </template>
-                <template v-slot:footer v-if="addressResults.length > 5">
-                  <v-pagination
-                    v-model="locidResultsPage"
-                    :length="Math.ceil(addressResults.length / 5)"
-                  ></v-pagination>
-                </template>
-              </v-data-iterator>
-            </v-card-text>
+              </template>
+              <template v-slot:footer v-if="addressResults.length > 5">
+                <v-pagination
+                  v-model="locidResultsPage"
+                  :length="Math.ceil(addressResults.length / 5)"
+                ></v-pagination>
+              </template>
+            </v-data-iterator>
+          </v-card-text>
 
-            <v-card-actions>
-              <v-btn
-                text="Clear Search"
-                @click="resetForm()"
-              ></v-btn>
-              <v-spacer></v-spacer>
-              <v-btn
-                text="Close"
-                @click="isActive.value = false"
-              ></v-btn>
-            </v-card-actions>
-          </v-card>
-        </template>
-      </v-dialog>
-
-    </v-main>
-  </v-app>
+          <v-card-actions>
+            <v-btn
+              text="Clear Search"
+              @click="resetForm()"
+            ></v-btn>
+            <v-spacer></v-spacer>
+            <v-btn
+              text="Close"
+              @click="isActive.value = false"
+            ></v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
+  </div>
 </template>
 
 <script setup lang="ts">

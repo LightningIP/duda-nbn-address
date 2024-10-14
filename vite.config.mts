@@ -59,7 +59,7 @@ export default defineConfig({
         format: 'amd',
         compact: true,
         minifyInternalExports: true,
-        preserveModules: true,
+        // preserveModules: true,
       },
       preserveEntrySignatures: 'strict',
       treeshake: false,

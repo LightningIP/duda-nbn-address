@@ -14,7 +14,7 @@
             <v-radio-group v-model="resultsDialogLOCID">
                 <v-data-iterator :items="addressResults" :page="locidResultsPage">
                     <template v-slot:default="{ items }">
-                        <template v-for="(item, i) in items" :key="item.value"  >
+                        <template v-for="(item) in items" :key="item.value"  >
                             <v-radio v-bind="item.raw"></v-radio>
                         </template>
                     </template>
@@ -98,7 +98,9 @@
     }
 
     console.log(props.redirect);
+    console.log(quickSq.value);
 
+    alert('Sorry... we don\'t have a redirect for this technology yet.');
 
   }
 

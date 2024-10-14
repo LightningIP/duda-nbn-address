@@ -68,16 +68,18 @@
   const locidResultsPage = ref<number>(1);
   const serviceQualification = ref<any>(null);
 
+  type Technology = 'Fibre' | 'Fibre To The Node' | 'Wireless' | 'HFC' | 'Fibre To The Curb' | 'Fibre To The Building' | 'Satellite';
   const quickSq = ref<null | {
-    id: string,
-    formattedAddress: string,
-    newDev: boolean,
-    technology: string,
-    serviceClass: string,
-    fibreUpgrade: boolean,
-    eeZone: string,
+    id: string;
+    formattedAddress: string;
+    newDev: boolean;
+    technology: Technology;
+    serviceClass: string;
+    fibreUpgrade: boolean;
+    eeZone: 'CBD' | 'Zone 1' | 'Zone 2' | 'Zone 3';
     eeBuild: 'A' | 'B' | 'C';
   }>(null);
+
 
   const handleLocation = async (data: any) => {
     serviceQualification.value = data;

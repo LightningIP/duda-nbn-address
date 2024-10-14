@@ -25,19 +25,17 @@
           </template>
         </v-banner>
 
-        <v-card v-if="quickSq" flat>
-          <v-card-title>{{ quickSq.formattedAddress }}</v-card-title>
-          <v-card-text>
+        <!-- Quick SQ Results -->
+        <v-card v-if="quickSq" flat :title="quickSq.formattedAddress">
+          <v-card-text v-if="buttons.length">
             <div class="d-flex justify-left ga-2">
-              <v-btn v-if="isFixedLine" :href="props.redirect.fixedline + '?locid=' + quickSq.id" size="small">Home Plans</v-btn>
-              <v-btn v-if="isFixedLine" :href="props.redirect.business + '?locid=' + quickSq.id" size="small">Business Plans</v-btn>
-              <v-btn v-if="isWireless" :href="props.redirect.wireless + '?locid=' + quickSq.id" class="ma-3">Fixed Wireless Plans</v-btn>
-              <v-btn v-if="isSatellite" :href="props.redirect.wireless + '?locid=' + quickSq.id" class="ma-3">SkyMuster Plus Plans</v-btn>
-              <v-btn v-if="quickSq.fibreUpgrade" :href="props.redirect.fixedline + '?locid=' + quickSq.id" class="ma-3">Upgrade to Fibre</v-btn>
+              <v-btn v-for="button in buttons" :href="button.href" size="small">{{ button.label }}</v-btn>
             </div>
           </v-card-text>
+          <template v-slot:append>
+            <v-btn @click="resetForm()" variant="plain" color="danger"><v-icon>mdi-close-circle-outline</v-icon></v-btn>
+          </template>
         </v-card>
-
 
         <v-progress-linear
           :active="true"
@@ -46,8 +44,6 @@
           :indeterminate="loading"
         ></v-progress-linear>
       </v-card>
-
-
 
       <v-dialog max-width="500" v-model="resultsDialog">
         <template v-slot:default="{ isActive }">
@@ -88,18 +84,13 @@
         </template>
       </v-dialog>
 
-      <pre v-if="quickSq">{{ quickSq }}</pre>
-      <pre v-if="serviceQualification">{{ serviceQualification }}</pre>
-
     </v-main>
   </v-app>
 </template>
 
 <script setup lang="ts">
-  import AddressBar from './components/AddressBar.vue';
-  import { ref, watch, computed } from 'vue';
-  import { AppProps } from './types';
-
+  import { ref, watch, computed, defineProps } from 'vue';
+  import { AppProps, TechnologyOption, TechnologyType } from './types';
 
   const props = defineProps<AppProps>();
 
@@ -110,22 +101,23 @@
   const resultsDialog = ref<boolean>(false);
   const locidResultsPage = ref<number>(1);
   const serviceQualification = ref<any>(null);
-
+  const buttons = ref<{ label: string, href: string }[]>([]);
 
   const quickSq = ref<null | {
     id: string;
     formattedAddress: string;
     newDev: boolean;
-    technology: Technology;
+    technology: TechnologyType;
     serviceClass: string;
     fibreUpgrade: boolean;
     eeZone: 'CBD' | 'Zone 1' | 'Zone 2' | 'Zone 3';
     eeBuild: 'A' | 'B' | 'C';
   }>(null);
 
-  const isFixedLine = computed(() => ['Fibre', 'Fibre To The Node', 'Fibre To The Curb', 'Fibre To The Building', 'HFC'].includes(quickSq.value?.technology || ''));
-  const isWireless = computed(() => ['Wireless'].includes(quickSq.value?.technology || ''));
-  const isSatellite = computed(() => ['Satellite'].includes(quickSq.value?.technology || ''));
+  //const isFixedLine = computed(() => ['Fibre', 'Fibre To The Node', 'Fibre To The Curb', 'Fibre To The Building', 'HFC'].includes(quickSq.value?.technology || ''));
+  //const isWireless = computed(() => ['Wireless'].includes(quickSq.value?.technology || ''));
+  //const isSatellite = computed(() => ['Satellite'].includes(quickSq.value?.technology || ''));
+
   const queryParams = computed(() => {
     if (!quickSq.value) return '';
     const params = new URLSearchParams()
@@ -141,6 +133,21 @@
     quickSq.value = null;
   }
 
+  function performTechAction(techOpts: TechnologyOption) {
+
+    if (techOpts.action == 'redirect') {
+      window.location.href = techOpts.link + '?' + queryParams.value;
+    }
+
+    else if (techOpts.action == 'button') {
+      buttons.value.push({
+        label: techOpts.name,
+        href: techOpts.link + '?' + queryParams.value,
+      });
+    }
+
+  }
+
   const handleLocation = async (data: any) => {
     serviceQualification.value = data;
     quickSq.value = {
@@ -154,17 +161,64 @@
       eeBuild: data.enterpriseEthernet.supportingRelatedLocationFeatures.fibreBuildCategory,
     }
 
-    // Do redirections
-    if (props.general.mode == 'redirector') {
-      if (isFixedLine.value) {
-        return window.location.href = props.redirect.fixedline.split('?')[0] + '?' + queryParams.value + '&' + props.redirect.fixedline.split('?')[1];
+    buttons.value = [];
+
+    if (props.mode == 'fulllookup') {
+      alert('Full SQ Check still to be implemented');
+    }
+
+    else if (props.mode == 'quicklookup') {
+
+      const fixedLineTechs = ['Fibre', 'Fibre To The Node', 'Fibre To The Curb', 'Fibre To The Building', 'HFC'];
+
+      // loop through each of the techOpts
+      for (const techOpts of props.techOpts) {
+
+        if (techOpts.tech == 'FixedLine') {
+          if (fixedLineTechs.includes(quickSq.value.technology)) {
+            performTechAction(techOpts);
+          }
+        }
+
+        else if (techOpts.tech == 'Wireless') {
+          if (quickSq.value.technology == 'Wireless') {
+            performTechAction(techOpts);
+          }
+        }
+
+        else if (techOpts.tech == 'Satellite') {
+          if (quickSq.value.technology == 'Satellite') {
+            performTechAction(techOpts);
+          }
+        }
+
+        else if (techOpts.tech == 'Enterprise') {
+          if (quickSq.value.eeZone || quickSq.value.eeBuild) {
+            performTechAction(techOpts);
+          }
+        }
+
+        else if (techOpts.tech == 'FibreUpgrade') {
+          if (quickSq.value.fibreUpgrade) {
+            performTechAction(techOpts);
+          }
+        }
+
+        else if (techOpts.tech == 'HighSpeedFW') {
+          if (quickSq.value.technology == 'Wireless') {
+            performTechAction(techOpts);
+          }
+        }
+
       }
-      if (isWireless.value) {
-        return window.location.href = props.redirect.wireless.split('?')[0] + '?' + queryParams.value + '&' + props.redirect.wireless.split('?')[1];
-      }
-      if (isSatellite.value) {
-        return window.location.href = props.redirect.satellite.split('?')[0] + '?' + queryParams.value + '&' + props.redirect.satellite.split('?')[1];
-      }
+
+
+
+
+    }
+
+    else {
+      alert('Invalid mode');
     }
 
   }
@@ -196,29 +250,7 @@
     }
   }
 
-  const closeResultsDialog = async () => {
-    resultsDialog.value = false;
-
-    if (!resultsDialogLOCID.value) {
-      searchDisabled.value = false;
-      addressSearchString.value = '';
-      addressResults.value = [];
-      return;
-    }
-
-    const addressItem = addressResults.value.find((item) => item.value === resultsDialogLOCID.value);
-
-    if (!addressItem) return;
-
-    addressSearchString.value = addressItem.label;
-    loading.value = true;
-    searchDisabled.value = true;
-    await fetchLocation(addressItem.value);
-    loading.value = false;
-    searchDisabled.value = false;
-  }
-
-  async function newAddressSearch(searchString) {
+  async function newAddressSearch(searchString: string) {
 
     // Reset values if search string is empty
     if (!searchString) {
@@ -254,6 +286,8 @@
   /**
    * Watch the address search string and trigger a new search when it changes
    */
-  watch(addressSearchString, newAddressSearch);
+  watch(addressSearchString, (val) => {
+    if (val) { newAddressSearch(val); }
+  });
 
 </script>

@@ -23,10 +23,13 @@
     theme="light"
     variant="solo"
     no-filter
-    :disabled="props.loading || props.disabled"
+    :disabled="props.disabled"
     :hide-details="true"
 
+    autofocus
+
     @update:search="searchTextUpdate"
+
   ></v-autocomplete>
 </template>
 

@@ -1,9 +1,9 @@
 
-type TechnologyType = 'Fibre' | 'Fibre To The Node' | 'Wireless' | 'HFC' | 'Fibre To The Curb' | 'Fibre To The Building' | 'Satellite';
-type TechnologyCategory = 'FixedLine' | 'FibreUpgrade' | 'FWUpgrade';
+export type TechnologyType = 'Fibre' | 'HFC' | 'Fibre To The Node' | 'Fibre To The Curb' | 'Fibre To The Building' | 'Wireless' | 'Satellite';
+type TechnologyCategory = 'FixedLine' | 'Wireless' | 'Satellite' | 'Enterprise' | 'FibreUpgrade' | 'HighSpeedFW';
 type Action = 'redirect' | 'button' | 'basicinfo'
-type technologyOption = {
-  tech: TechnologyCategory | TechnologyType,
+export type TechnologyOption = {
+  tech: TechnologyCategory,
   name: string,
   action: Action,
   link?: string,
@@ -11,5 +11,5 @@ type technologyOption = {
 
 export type AppProps = {
   mode: 'quicklookup' | 'fulllookup',
-  techOpts: technologyOption[],
+  techOpts: TechnologyOption[],
 }

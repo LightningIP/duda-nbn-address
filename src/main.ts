@@ -32,6 +32,30 @@ init({ container: '#app', props: {
       tech: 'FixedLine',
       name: 'Home Plans',
       action: 'button',
+      link: '/home-plans?test=1',
+    },
+    {
+      tech: 'FixedLine',
+      name: 'Business Plans',
+      action: 'button',
+      link: '/home-plans',
+    },
+    {
+      tech: 'Wireless',
+      name: 'Fixed Wireless',
+      action: 'button',
+      link: '/home-plans',
+    },
+    {
+      tech: 'FibreUpgrade',
+      name: 'Fibre Upgrade',
+      action: 'button',
+      link: '/home-plans',
+    },
+    {
+      tech: 'HighSpeedFW',
+      name: 'Wireless Upgrades',
+      action: 'button',
       link: '/home-plans',
     }
   ],

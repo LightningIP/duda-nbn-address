@@ -1,6 +1,5 @@
 <template>
   <v-autocomplete
-
     flat
     placeholder="Search your address..."
     persistent-placeholder
@@ -32,6 +31,12 @@
 
   ></v-autocomplete>
 </template>
+
+<style lang="css">
+  .v-autocomplete input {
+    background-color: unset !important;
+  }
+</style>
 
 <script setup lang="ts">
   import { onMounted, ref, watch } from 'vue';

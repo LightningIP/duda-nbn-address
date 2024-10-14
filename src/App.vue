@@ -122,7 +122,7 @@
   });
 
   function resetForm() {
-    addressSearchString.value = '';
+    addressSearchString.value = null;
     addressResults.value = [];
     resultsDialog.value = false;
     serviceQualification.value = null;
@@ -135,10 +135,15 @@
       window.location.href = techOpts.link + '?' + queryParams.value;
     }
 
-    else if (techOpts.action == 'button') {
+    else if (techOpts.action == 'button' && techOpts.link) {
+
+      const [ link, ...existingParams ] = techOpts.link.split('?');
+
+      const fullLink = link + '?' + existingParams.join('&') + '&' + queryParams.value;
+
       buttons.value.push({
         label: techOpts.name,
-        href: techOpts.link + '?' + queryParams.value,
+        href: fullLink,
       });
     }
 

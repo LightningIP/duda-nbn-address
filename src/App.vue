@@ -137,7 +137,7 @@
 
     else if (techOpts.action == 'button' && techOpts.link) {
 
-      const [ link, ...existingParams ] = techOpts.link.href.split('?');
+      const [ link, ...existingParams ] = techOpts.link.raw_url.split('?');
 
       const fullLink = link + '?' + existingParams.join('&') + '&' + queryParams.value;
 

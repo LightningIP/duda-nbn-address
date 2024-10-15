@@ -35,6 +35,7 @@
 <style lang="css">
   .v-autocomplete input {
     background-color: unset !important;
+    outline: unset !important;
   }
 </style>
 

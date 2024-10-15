@@ -33,31 +33,61 @@ init({ container: '#app', props: {
       tech: 'FixedLine',
       name: 'Home Plans',
       action: 'button',
-      link: '/home-plans?test=1',
+      link: {
+        href: '/home-plans',
+        label: 'Home Plans',
+        raw_url: '/home-plans?test=1',
+        type: 'url',
+        value: 'home-plans',
+      }
     },
     {
       tech: 'FixedLine',
       name: 'Business Plans',
       action: 'button',
-      link: '/home-plans',
+      link: {
+        href: '/home-plans',
+        label: 'Home Plans',
+        raw_url: '/home-plans?test=1',
+        type: 'url',
+        value: 'home-plans',
+      }
     },
     {
       tech: 'Wireless',
       name: 'Fixed Wireless',
       action: 'button',
-      link: '/home-plans',
+      link: {
+        href: '/home-plans',
+        label: 'Home Plans',
+        raw_url: '/home-plans?test=1',
+        type: 'url',
+        value: 'home-plans',
+      }
     },
     {
       tech: 'FibreUpgrade',
       name: 'Fibre Upgrade',
       action: 'button',
-      link: '/home-plans',
+      link: {
+        href: '/home-plans',
+        label: 'Home Plans',
+        raw_url: '/home-plans?test=1',
+        type: 'url',
+        value: 'home-plans',
+      }
     },
     {
       tech: 'HighSpeedFW',
       name: 'Wireless Upgrades',
       action: 'button',
-      link: '/home-plans',
+      link: {
+        href: '/home-plans',
+        label: 'Home Plans',
+        raw_url: '/home-plans?test=1',
+        type: 'url',
+        value: 'home-plans',
+      }
     }
   ],
 } });

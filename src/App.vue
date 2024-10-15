@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card density="compact">
+    <v-card density="compact" variant="outlined" hover>
 
       <!-- Address Bar -->
       <AddressBar v-model="addressSearchString" :disabled="loading || searchDisabled" :autofocus="!props.inEditor"
